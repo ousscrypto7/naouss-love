@@ -2,158 +2,147 @@ import streamlit as st
 from datetime import datetime
 import random
 
-# --- 1. CONFIGURATION DE LA PAGE ---
+# --- 1. CONFIGURATION ---
 st.set_page_config(
-    page_title="Naouss ❤️", 
-    page_icon="🌿", 
+    page_title="Notre Amour ❤️", 
+    page_icon="💖", 
     layout="centered"
 )
 
-# --- 2. VARIABLES PERSONNALISÉES ---
-PRENOM = "Nanou"
-TEAM_NAME = "Naouss"
-# Date de mise en couple : 22 Mars 2019 à 20h00
+# --- 2. VARIABLES ---
+# Date : 22 Mars 2019 à 20h00
 DATE_DEBUT = datetime(2019, 3, 22, 20, 0) 
 
-# --- 3. DESIGN MODERN (CSS - STYLE 2026) ---
-# Thème : Vert Olive, Glassmorphism (Effet verre dépoli), Minimaliste
+# --- 3. DESIGN ROMANTIQUE (CSS) ---
 st.markdown("""
 <style>
-    /* Import de la police moderne 'Poppins' */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
-    /* Fond d'écran : Dégradé Vert Olive Profond */
+    /* Fond Rose Pastel Dégradé */
     .stApp {
-        background: linear-gradient(135deg, #2E3B28 0%, #556B2F 100%);
+        background: linear-gradient(180deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
         font-family: 'Poppins', sans-serif;
-        color: white;
+        color: #5e2a2a; /* Texte rouge sombre/marron pour le contraste */
     }
 
-    /* Supprimer les marges inutiles en haut */
-    .block-container {
-        padding-top: 3rem;
-        padding-bottom: 5rem;
+    /* Animation de cœurs en arrière-plan (Effet visuel) */
+    .heart-bg {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        z-index: 0;
+        pointer-events: none;
     }
 
-    /* Carte effet verre (Le conteneur du compteur) */
+    /* Carte effet verre teinté rose */
     .glass-card {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.25);
         border-radius: 20px;
         padding: 30px;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 8px 32px 0 rgba(255, 105, 135, 0.2);
         text-align: center;
         margin-top: 20px;
         margin-bottom: 30px;
     }
 
-    /* Style du bouton interactif */
+    /* Bouton centré et stylé */
     div.stButton > button {
-        background: rgba(255, 255, 255, 0.9);
-        color: #2E3B28;
+        background: #ff758c;
+        color: white;
         border: none;
-        border-radius: 12px;
-        padding: 15px 25px;
+        border-radius: 25px;
+        padding: 15px 30px;
         font-size: 16px;
         font-weight: 600;
         width: 100%;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
     }
     
     div.stButton > button:hover {
-        transform: scale(1.02);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        background: #ffffff;
-        color: #556B2F;
+        transform: scale(1.05);
+        background: #ff5e78;
+        box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6);
+        color: white;
     }
     
-    /* Typographie */
-    h1 { font-weight: 700; letter-spacing: -1px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-    h3 { font-weight: 500; }
-    p { font-weight: 300; opacity: 0.9; }
+    h1 { font-weight: 700; color: #880e4f; text-shadow: 0 2px 4px rgba(255,255,255,0.3); }
+    p { font-weight: 400; font-size: 1.1em; }
     
-    /* Cacher le menu hamburger Streamlit et le footer "Made with Streamlit" */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
+    /* Cacher les menus */
+    #MainMenu, footer, header {visibility: hidden;}
     
 </style>
+<div class="heart-bg"></div>
 """, unsafe_allow_html=True)
 
 # --- 4. CALCUL DU TEMPS ---
 def get_detailed_time_diff():
     now = datetime.now()
     diff = now - DATE_DEBUT
-    
-    # Calcul précis
     years = diff.days // 365
     remaining_days = diff.days % 365
-    
     return years, remaining_days
 
 ans, jours_restants = get_detailed_time_diff()
 
-# --- 5. INTERFACE UTILISATEUR ---
+# --- 5. INTERFACE ---
 
-# A. La Photo (Centrée)
-col_left, col_center, col_right = st.columns([1, 2, 1])
-with col_center:
-    # On affiche la photo si elle existe, sinon un message d'erreur discret
+# A. Photo (Toujours vérifier qu'elle est droite sur ton ordi avant upload !)
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
     try:
-        # Border radius via CSS appliqué à l'image n'est pas natif simple en Streamlit, 
-        # donc on affiche l'image brute, elle sera carrée/rectangle selon ton fichier.
         st.image("nous.jpg", use_column_width=True) 
     except:
-        st.warning("⚠️ Ajoute une photo nommée 'nous.jpg' dans le dossier.")
+        st.warning("Ajoute la photo 'nous.jpg'")
 
-# B. Titres
-st.markdown(f"<h1 style='text-align: center; margin-top: 10px;'>Coucou {PRENOM} ❤️</h1>", unsafe_allow_html=True)
-st.markdown(f"<p style='text-align: center; font-size: 1.1em; margin-bottom: 20px;'>Bienvenue chez <b>{TEAM_NAME}</b></p>", unsafe_allow_html=True)
+# B. Textes
+st.markdown(f"<h1 style='text-align: center; margin-top: 10px;'>Bonjour ma chérie ❤️</h1>", unsafe_allow_html=True)
+st.markdown(f"<p style='text-align: center; margin-bottom: 20px; color: #5e2a2a;'>Bienvenue sur notre site d'amour</p>", unsafe_allow_html=True)
 
-# C. Le Compteur Principal (Carte Glass)
+# C. Compteur
 st.markdown(f"""
 <div class="glass-card">
-    <p style="margin:0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8;">Depuis le 22 Mars 2019</p>
-    <div style="font-size: 3.5em; font-weight: 700; line-height: 1.2; margin: 15px 0;">
-        {ans} Ans<br>
-        <span style="font-size: 0.5em; vertical-align: middle;">et {jours_restants} jours</span>
+    <p style="margin:0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 2px; color: #880e4f;">Depuis le 22 Mars 2019</p>
+    <div style="font-size: 3.5em; font-weight: 700; line-height: 1.2; margin: 15px 0; color: #d81b60;">
+        {ans} ans<br>
+        <span style="font-size: 0.5em; vertical-align: middle; color: #5e2a2a;">et {jours_restants} jours</span>
     </div>
-    <p style="font-size: 0.9em; margin-top: 10px;">C'est pas mal, non ? 😉</p>
+    <p style="font-size: 1em; margin-top: 10px; font-style: italic;">d'amour... 🌹</p>
 </div>
 """, unsafe_allow_html=True)
 
-# D. Zone Interactive (Bouton Love)
-col_spacer, col_btn, col_spacer2 = st.columns([0.2, 3, 0.2])
+# D. Bouton (Centré via colonnes équilibrées)
+# Avant c'était [0.2, 3, 0.2] -> Trop large. Maintenant [1, 2, 1] -> Plus centré.
+col_left, col_btn, col_right = st.columns([1, 2, 1])
 
 with col_btn:
-    if st.button("✨ Pourquoi je t'aime ? (Clique)"):
+    if st.button("💌 Pourquoi je t'aime ?"):
         reasons = [
-            "Parce que tu es ma Nanou préférée.",
-            "Pour ta patience légendaire avec moi.",
-            "Parce que le vert olive, c'est la vie (et toi aussi).",
-            "Parce qu'on est Naouss, et c'est pour toujours.",
-            "Pour ton sourire quand tu me regardes.",
-            "Parce que tu rends chaque jour meilleur."
+            "Pour ton sourire qui me fait fondre.",
+            "Parce que tu es ma meilleure amie.",
+            "Pour tous nos souvenirs depuis 2019.",
+            "Parce que je ne peux pas imaginer ma vie sans toi.",
+            "Tout simplement parce que je t'aime."
         ]
-        message_du_jour = random.choice(reasons)
+        msg = random.choice(reasons)
         
-        # Affichage du message style "Notification iOS"
         st.markdown(f"""
         <div style="
-            background: rgba(255,255,255,0.95); 
-            color: #2E3B28; 
-            padding: 20px; 
+            background: white; 
+            color: #d81b60; 
+            padding: 15px; 
             border-radius: 15px; 
             text-align: center; 
             margin-top: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            font-weight: 600;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             animation: fadeIn 0.5s;
         ">
-            {message_du_jour}
+            {msg}
         </div>
         """, unsafe_allow_html=True)
         
